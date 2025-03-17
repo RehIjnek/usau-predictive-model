@@ -19,4 +19,13 @@ def scraper_helper(url):
     return home_teams, away_teams, home_scores, away_scores
 
 def scraper(file_list):
-    return
+    home_teams, away_teams, home_scores, away_scores = [], [], [], []
+    
+    for url in file_list:
+        temp1, temp2, temp3, temp4 = scraper_helper(url)
+        home_teams += temp1
+        away_teams += temp2
+        home_scores += temp3
+        away_scores += temp4
+
+    return home_teams, away_teams, home_scores, away_scores
