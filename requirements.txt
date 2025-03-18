@@ -1,5 +1,7 @@
 requests
-html5lib
+lxml
 bs4
 python-dotenv
 pymongo
+selenium
+webdriver_manager
