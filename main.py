@@ -1,6 +1,6 @@
-from scraper import scraper
-from importer import import_data
-from exporter import export_data
+from src.scraper import scraper
+from src.importer import import_data
+from src.exporter import export_data
 
 if __name__ == '__main__':
     file_list = import_data('urls.csv')

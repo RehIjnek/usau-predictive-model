@@ -9,6 +9,7 @@ def export_data(home_teams, away_teams, home_scores, away_scores):
     db = client['usau']
     collection = db['games']
     
+    documents = []
     for i in range(len(home_teams)):
         document = {
             'home_team' : home_teams[i],
@@ -16,4 +17,5 @@ def export_data(home_teams, away_teams, home_scores, away_scores):
             'home_score' : home_scores[i],
             'away_score' : away_scores[i]
         }
-        collection.insert_one(document)
+        documents.append(document)
+    collection.insert_many(documents, ordered=True)
