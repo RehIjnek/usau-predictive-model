@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 from bs4 import BeautifulSoup
 from datetime import datetime
+import csv
 
 def url_scraper():
     # Setup Selenium WebDriver
@@ -78,5 +79,15 @@ def url_scraper():
 
     # Close Selenium browser
     driver.quit()
-    
-    return list(tournament_links)
+
+    export_urls(list(tournament_links))
+
+def export_urls(tournament_links):
+    csv_filename = "urls.csv"
+
+    # Writing to CSV
+    with open(csv_filename, mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["URL"])  # Column header
+        for url in tournament_links:
+            writer.writerow([url])

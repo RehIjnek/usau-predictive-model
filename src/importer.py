@@ -1,6 +1,11 @@
 import csv
 
-def import_data(file_name):
-    with open(file_name, 'r') as file:
+def import_urls(file_name):
+    urls = []
+
+    with open(file_name, mode="r", newline="", encoding="utf-8") as file:
         reader = csv.reader(file)
-        return next(reader, None)
+        next(reader)  # Skip header row
+        urls = [row[0] for row in reader]
+
+    return urls
