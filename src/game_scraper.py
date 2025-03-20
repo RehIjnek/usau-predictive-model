@@ -5,6 +5,8 @@ import time
 
 def game_scraper(url):
     response = requests.get(url)
+    time.sleep(3)
+
     soup = BeautifulSoup(response.content, 'lxml')
 
     games = soup.find_all('span', attrs={'data-type': True})
@@ -13,6 +15,9 @@ def game_scraper(url):
 
     match = re.search(r"/events/([^/]+)/", url)
     event_name = match.group(1)
+
+    event_url = 'https://play.usaultimate.org/events/' + event_name +'/'
+    event_date = date_scraper(event_url)
 
     for game in games:
         data_type = game['data-type']
@@ -27,4 +32,16 @@ def game_scraper(url):
         elif data_type == "game-score-away":
             away_scores.append(text)
 
-    return event_name, home_teams, away_teams, home_scores, away_scores
+    return event_name, event_date, home_teams, away_teams, home_scores, away_scores
+
+def date_scraper(url):
+    response = requests.get(url)
+
+    soup = BeautifulSoup(response.content, 'lxml')
+
+    date = soup.find("b", string="Date: ")
+
+    if date:
+        date_text = date.next_sibling.strip()
+    
+    return date_text
