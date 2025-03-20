@@ -42,6 +42,7 @@ def date_scraper(url):
     date = soup.find("b", string="Date: ")
 
     if date:
-        date_text = date.next_sibling.strip()
+        date_range = date.next_sibling.strip()
+        latest_date = date_range.split(' - ')[-1]
     
-    return date_text
+    return latest_date

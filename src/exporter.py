@@ -7,7 +7,7 @@ def export_games(event_name, event_date, home_teams, away_teams, home_scores, aw
     mongo_uri = os.getenv('MONGO_URI')
     client = MongoClient(mongo_uri)
     db = client['usau']
-    collection = db['games3']
+    collection = db['games2']
     
     documents = []
     for i in range(len(home_teams)):
