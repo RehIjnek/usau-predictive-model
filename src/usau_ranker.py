@@ -1,4 +1,5 @@
 # chatgpt generated, tweaked by Kenji Her
+# need to figure out data strucs for parameters + fixing iterator
 
 import numpy as np
 

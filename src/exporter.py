@@ -22,3 +22,40 @@ def export_games(event_name, event_date, home_teams, away_teams, home_scores, aw
         documents.append(document)
     if documents:
         collection.insert_many(documents, ordered=True)
+
+def export_wl(team_records):
+    load_dotenv()
+    mongo_uri = os.getenv('MONGO_URI')
+    client = MongoClient(mongo_uri)
+    db = client['usau']
+    collection = db['records']
+
+    documents = []
+    for team, record in team_records.items():
+        document = {
+            'team_name' : team,
+            'wins' : record['wins'],
+            'losses' : record['losses']
+        }
+        documents.append(document)
+    if documents:
+        collection.insert_many(documents, ordered=True)
+
+def export_pd(team_stats):
+    load_dotenv()
+    mongo_uri = os.getenv('MONGO_URI')
+    client = MongoClient(mongo_uri)
+    db = client['usau']
+    collection = db['stats']
+
+    documents = []
+    for team, stats in team_stats.items():
+        document = {
+            'team_name' : team,
+            'tpd' : stats['total_point_diff'],
+            'apd' : stats['average_point_diff'],
+            'games_played' : stats['games_played']
+        }
+        documents.append(document)
+    if documents:
+        collection.insert_many(documents, ordered=True)

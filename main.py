@@ -1,18 +1,24 @@
 from src.game_scraper import game_scraper
 from src.url_scraper import url_scraper
 from src.importer import import_urls
-from src.exporter import export_games
+from src.exporter import export_games, export_wl, export_pd
+from src.win_loss import win_loss
+from src.point_differential import point_differential
 
 if __name__ == '__main__':
-    # url scraper for new tournaments
+    # urls
     # file_list = url_scraper()
 
-    # for testing
-    # file_list = ['https://play.usaultimate.org/events/Smoky-Mountain-Invite-2025/schedule/Men/CollegeMen/',
-    #              'https://play.usaultimate.org/events/Florida-Warm-Up-2025/schedule/Men/CollegeMen/',
-    #              'https://play.usaultimate.org/events/Carolina-Kickoff-mens-2025/schedule/Men/CollegeMen/']
+    # events, dates, games
+    # file_list = import_urls('urls.csv')
+    # for url in file_list:
+    #     event_name, event_date, home_teams, away_teams, home_scores, away_scores = game_scraper(url)
+    #     export_games(event_name, event_date, home_teams, away_teams, home_scores, away_scores)
 
-    file_list = import_urls('urls.csv')
-    for url in file_list:
-        event_name, event_date, home_teams, away_teams, home_scores, away_scores = game_scraper(url)
-        export_games(event_name, event_date, home_teams, away_teams, home_scores, away_scores)
+    # team records
+    # team_records = win_loss()
+    # export_wl(team_records)
+
+    # average point differentials, point differentials against top teams
+    team_stats = point_differential()
+    export_pd(team_stats)
