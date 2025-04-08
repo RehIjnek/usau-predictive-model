@@ -4,6 +4,7 @@ from src.importer import import_urls
 from src.exporter import export_games, export_wl, export_pd
 from src.win_loss import win_loss
 from src.point_differential import point_differential
+from src.usau_ranker import populate_games, compute_team_rating
 
 if __name__ == '__main__':
     # urls
@@ -20,5 +21,11 @@ if __name__ == '__main__':
     # export_wl(team_records)
 
     # average point differentials, point differentials against top teams
-    team_stats = point_differential()
-    export_pd(team_stats)
+    # team_stats = point_differential()
+    # export_pd(team_stats)
+
+    # usau elos
+    games = populate_games()
+    team_elos = compute_team_rating(games)
+    for team, elo in team_elos.items():
+        print(team, elo)
