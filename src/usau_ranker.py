@@ -29,12 +29,11 @@ def compute_score_weight(winning_score: int, losing_score: int):
     total_score = winning_score + losing_score
     if winning_score >= 13 or total_score >= 19:
         return 1.0
-    return min(1.0, np.sqrt((winning_score + max(losing_score, np.floor((winning_score - 1) / 2))) / (19.0)))
+    return min(1.0, np.sqrt((winning_score + max(losing_score, np.floor((winning_score - 1) / 2.0))) / (19.0)))
 
-def compute_date_weight(week: int, total_weeks=13):
+def compute_date_weight(week: int, total_weeks=14):
     """Computes the date weight based on how recent the game was played."""
-    multiplier = 2 if week == 1 else 2**(1.0 / (total_weeks - 1))
-    return 0.5 * multiplier ** (week - 1)
+    return 0.5 * (2 ** ((week - 1) / (total_weeks - 1)))
 
 def is_ignorable_game(winner_rating, loser_rating, winning_score, losing_score, winner_games_played, threshold=5):
     """Check if the game should be ignored based on rating gap and score blowout."""
@@ -66,9 +65,9 @@ def compute_team_rating(games, initial_rating=1000, iterations=1000):
 
                 # Check if game should be ignored
                 if win:
-                    ignorable = is_ignorable_game(team_ratings[team], opponent_rating, ws, ls, len(team_games))
+                    ignorable = is_ignorable_game(team_ratings[team], opponent_rating, ws, ls, eligible_games)
                 else:
-                    ignorable = is_ignorable_game(opponent_rating, team_ratings[team], ws, ls, len(team_games))
+                    ignorable = is_ignorable_game(opponent_rating, team_ratings[team], ws, ls, eligible_games)
 
                 if ignorable:
                     continue
@@ -106,7 +105,7 @@ def populate_games():
 
     games = []
     for document in filtered_docs:
-        if document['home_score'] > document['away_score']:
+        if int(document['home_score']) > int(document['away_score']):
             win = True
             winning_score = int(document['home_score'])
             losing_score = int(document['away_score'])
@@ -146,3 +145,13 @@ def get_week(week: str):
     week_number = delta_days // 7 + 1
 
     return week_number
+
+def get_top_20(team_ratings):
+    team_ratings = sorted(team_ratings.items(), key=lambda item: item[1])
+
+    top20 = []
+
+    for i in range(20):
+        top20.append(team_ratings[-(i+1)][0])
+
+    return top20

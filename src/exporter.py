@@ -41,7 +41,7 @@ def export_wl(team_records):
     if documents:
         collection.insert_many(documents, ordered=True)
 
-def export_pd(team_stats):
+def export_pd(team_stats, team_stats_att):
     load_dotenv()
     mongo_uri = os.getenv('MONGO_URI')
     client = MongoClient(mongo_uri)
@@ -55,6 +55,27 @@ def export_pd(team_stats):
             'tpd' : stats['total_point_diff'],
             'apd' : stats['average_point_diff'],
             'games_played' : stats['games_played']
+        }
+        if team in team_stats_att:
+            document['tpd_att'] = team_stats_att[team]['total_point_diff']
+            document['apd_att'] = team_stats_att[team]['average_point_diff']
+            document['games_played_att'] = team_stats_att[team]['games_played']
+        documents.append(document)
+    if documents:
+        collection.insert_many(documents, ordered=True)
+
+def export_elos(team_elos):
+    load_dotenv()
+    mongo_uri = os.getenv('MONGO_URI')
+    client = MongoClient(mongo_uri)
+    db = client['usau']
+    collection = db['elos']
+
+    documents = []
+    for team, elo in team_elos.items():
+        document = {
+            'team_name' : team,
+            'elo' : float(elo)
         }
         documents.append(document)
     if documents:
